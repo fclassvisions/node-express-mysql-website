@@ -12,8 +12,8 @@ function TicketForm({
   onSubmit = () => {},
 }) {
   const [tSummary, setTSummary] = useState(summary);
-  const [tPriority, setTPriority] = useState(priority);
-  const [tStatus, setTStatus] = useState(status);
+  const [tPriority, setTPriority] = useState(priority || "LOW");
+  const [tStatus, setTStatus] = useState(status || "CREATED");
 
   return (
     <div className="TicketForm">

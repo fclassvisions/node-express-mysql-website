@@ -19,6 +19,12 @@ export const createTicket = async (ticket) => {
     },
     body: JSON.stringify(ticket),
   });
+
+  if (rawResponse.status !== 200) {
+    console.error("Could not create ticket.");
+    return null;
+  }
+
   return await rawResponse.json();
 };
 
