@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { createTicket, fetchAllTickets } from "./service/ticketService";
+import {
+  createTicket,
+  fetchAllTickets,
+  updateTicket,
+} from "./service/ticketService";
 import TicketForm from "./components/TicketForm/TicketForm";
+import { formatDate } from "./util/dateUtil";
 
 function App() {
   const [tickets, setTickets] = useState([]);
-  const [ticket, setTicket] = useState({});
+  const [currentTicket, setCurrentTicket] = useState({});
 
   const getAllTickets = async () => {
     setTickets(await fetchAllTickets());
   };
 
-  const sendCreateRequest = async (
+  const sendSaveRequest = async (
     id,
     summary,
     priority,
@@ -19,21 +24,25 @@ function App() {
     create_date,
     update_date
   ) => {
-    const createdTicket = await createTicket({
+    const newTicket = {
       id,
       summary,
       priority,
       status,
-      create_date,
-      update_date,
-    });
+      create_date: formatDate(new Date(create_date)),
+      update_date: formatDate(new Date(update_date)),
+    };
 
-    if (!createdTicket) {
+    const savedTicket = id
+      ? await updateTicket(id, newTicket)
+      : await createTicket(newTicket);
+
+    if (!savedTicket) {
       return;
     }
 
     getAllTickets();
-    setTicket(createdTicket);
+    setCurrentTicket(savedTicket);
   };
 
   useEffect(() => {
@@ -43,22 +52,30 @@ function App() {
   return (
     <div className="App">
       <TicketForm
-        id={ticket.id}
-        summary={ticket.summary}
-        priority={ticket.priority}
-        status={ticket.status}
+        id={currentTicket.id}
+        summary={currentTicket.summary}
+        priority={currentTicket.priority}
+        status={currentTicket.status}
         createDate={
-          ticket.create_date ? new Date(ticket.create_date) : new Date()
+          currentTicket.create_date
+            ? new Date(currentTicket.create_date)
+            : new Date()
         }
         updateDate={
-          ticket.update_date ? new Date(ticket.update_date) : new Date()
+          currentTicket.update_date
+            ? new Date(currentTicket.update_date)
+            : new Date()
         }
         readonly={false}
-        onSubmit={sendCreateRequest}
+        onSubmit={sendSaveRequest}
       />
       <h1>Tickets</h1>
       {tickets.map((ticket, index) => (
-        <div key={index} style={{ border: "1px solid black" }}>
+        <div
+          key={index}
+          onClick={() => setCurrentTicket(ticket)}
+          style={{ border: "1px solid black" }}
+        >
           <p>{ticket.id}</p>
           <p>{ticket.summary}</p>
           <p>{ticket.priority}</p>

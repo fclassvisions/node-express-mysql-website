@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatDate } from "../../util/dateUtil";
 
 function TicketForm({
@@ -12,8 +12,14 @@ function TicketForm({
   onSubmit = () => {},
 }) {
   const [tSummary, setTSummary] = useState(summary);
-  const [tPriority, setTPriority] = useState(priority || "LOW");
-  const [tStatus, setTStatus] = useState(status || "CREATED");
+  const [tPriority, setTPriority] = useState(priority);
+  const [tStatus, setTStatus] = useState(status);
+
+  useEffect(() => {
+    setTSummary(summary);
+    setTPriority(priority || "LOW");
+    setTStatus(status || "CREATED");
+  }, [id]);
 
   return (
     <div className="TicketForm">
