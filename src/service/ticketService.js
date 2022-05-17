@@ -57,5 +57,11 @@ export const deleteTicket = async (id) => {
       Accept: "application/json",
     },
   });
+
+  if (rawResponse.status !== 200) {
+    console.error("Could not delete ticket.");
+    return null;
+  }
+
   return await rawResponse.json();
 };

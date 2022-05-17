@@ -16,7 +16,7 @@ function TicketForm({
   const [tStatus, setTStatus] = useState(status);
 
   useEffect(() => {
-    setTSummary(summary);
+    setTSummary(summary || "");
     setTPriority(priority || "LOW");
     setTStatus(status || "CREATED");
   }, [id]);
@@ -64,7 +64,7 @@ function TicketForm({
           name="createDate"
           disabled
         />
-        <label htmlFor="updateDate">Create Date</label>
+        <label htmlFor="updateDate">Update Date</label>
         <input
           type="date"
           value={formatDate(updateDate)}
@@ -73,7 +73,14 @@ function TicketForm({
         />
         <button
           onClick={() => {
-            onSubmit(id, tSummary, tPriority, tStatus, createDate, updateDate);
+            onSubmit(
+              id,
+              tSummary,
+              tPriority,
+              tStatus,
+              createDate,
+              new Date().toString()
+            );
           }}
         >
           Submit
