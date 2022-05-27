@@ -8,6 +8,16 @@ import {
 } from "./service/ticketService";
 import TicketForm from "./components/TicketForm/TicketForm";
 import { formatDate } from "./util/dateUtil";
+import Table from "./components/Table/Table";
+
+const COLS = [
+  "id",
+  "summary",
+  "priority",
+  "status",
+  "create_date",
+  "update_date",
+];
 
 function App() {
   const [tickets, setTickets] = useState([]);
@@ -66,40 +76,31 @@ function App() {
 
   return (
     <div className="App">
-      <TicketForm
-        id={currentTicket.id}
-        summary={currentTicket.summary}
-        priority={currentTicket.priority}
-        status={currentTicket.status}
-        createDate={
-          currentTicket.create_date
-            ? new Date(currentTicket.create_date)
-            : new Date()
-        }
-        updateDate={
-          currentTicket.update_date
-            ? new Date(currentTicket.update_date)
-            : new Date()
-        }
-        readonly={false}
-        onSubmit={sendSaveRequest}
-      />
-      <h1>Tickets</h1>
-      {tickets.map((ticket, index) => (
-        <div
-          key={index}
-          onClick={() => setCurrentTicket(ticket)}
-          style={{ border: "1px solid black" }}
-        >
-          <p>{ticket.id}</p>
-          <p>{ticket.summary}</p>
-          <p>{ticket.priority}</p>
-          <p>{ticket.status}</p>
-          <p>{ticket.create_date}</p>
-          <p>{ticket.update_date}</p>
-          <button onClick={() => sendDeleteRequest(ticket)}>Delete</button>
-        </div>
-      ))}
+      <div className="main-table">
+        <h2 className="title">Tickets</h2>
+        <Table list={tickets} colNames={COLS} />
+      </div>
+      <div className="main-form">
+        <h2 className="title">Modify Ticket</h2>
+        <TicketForm
+          id={currentTicket.id}
+          summary={currentTicket.summary}
+          priority={currentTicket.priority}
+          status={currentTicket.status}
+          createDate={
+            currentTicket.create_date
+              ? new Date(currentTicket.create_date)
+              : new Date()
+          }
+          updateDate={
+            currentTicket.update_date
+              ? new Date(currentTicket.update_date)
+              : new Date()
+          }
+          readonly={false}
+          onSubmit={sendSaveRequest}
+        />
+      </div>
     </div>
   );
 }
