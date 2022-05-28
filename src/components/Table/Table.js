@@ -14,6 +14,8 @@ function Table({
   pageSize = 10,
   width = "auto",
   height = "auto",
+  onSelect = null,
+  onDelete = null,
 }) {
   const [page, setPage] = useState(pageNum);
 
@@ -37,6 +39,7 @@ function Table({
               {colNames.map((headerItem, index) => (
                 <th key={index}>{headerItem.toUpperCase()}</th>
               ))}
+              {onDelete && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -45,8 +48,17 @@ function Table({
             ).map((obj, index) => (
               <tr key={index}>
                 {Object.values(obj).map((value, index2) => (
-                  <td key={index2}>{value}</td>
+                  <td key={index2} onClick={() => onSelect(obj)}>
+                    {value}
+                  </td>
                 ))}
+                {onDelete && (
+                  <td>
+                    <button className="button" onClick={() => onDelete(obj)}>
+                      Delete
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

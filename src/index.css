@@ -16,6 +16,12 @@ code {
   text-align: center;
 }
 
+.button-group {
+  width: 75%;
+  display: flex;
+  margin: auto;
+}
+
 .button {
   color: white;
   background-color: black;

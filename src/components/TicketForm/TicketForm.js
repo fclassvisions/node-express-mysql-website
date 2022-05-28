@@ -11,6 +11,7 @@ function TicketForm({
   updateDate = new Date(),
   readonly = false,
   onSubmit = () => {},
+  onClear = () => {},
 }) {
   const [tSummary, setTSummary] = useState(summary);
   const [tPriority, setTPriority] = useState(priority);
@@ -84,9 +85,10 @@ function TicketForm({
             disabled
           />
         </div>
-        <div className="form-group">
+        <div className="button-group">
           <button
             className="button"
+            style={{ width: "50%" }}
             onClick={() => {
               onSubmit(
                 id,
@@ -99,6 +101,9 @@ function TicketForm({
             }}
           >
             Submit
+          </button>
+          <button style={{ width: "50%" }} onClick={onClear}>
+            Clear
           </button>
         </div>
       </div>

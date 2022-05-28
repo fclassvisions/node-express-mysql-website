@@ -23,6 +23,14 @@ function App() {
   const [tickets, setTickets] = useState([]);
   const [currentTicket, setCurrentTicket] = useState({});
 
+  const loadTicket = (ticket) => {
+    setCurrentTicket(ticket);
+  };
+
+  const unloadTicket = () => {
+    setCurrentTicket({});
+  };
+
   const getAllTickets = async () => {
     setTickets(await fetchAllTickets());
   };
@@ -78,7 +86,12 @@ function App() {
     <div className="App">
       <div className="main-table">
         <h2 className="title">Tickets</h2>
-        <Table list={tickets} colNames={COLS} />
+        <Table
+          list={tickets}
+          colNames={COLS}
+          onSelect={loadTicket}
+          onDelete={sendDeleteRequest}
+        />
       </div>
       <div className="main-form">
         <h2 className="title">Modify Ticket</h2>
@@ -99,6 +112,7 @@ function App() {
           }
           readonly={false}
           onSubmit={sendSaveRequest}
+          onClear={unloadTicket}
         />
       </div>
     </div>
